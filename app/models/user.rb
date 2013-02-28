@@ -151,11 +151,11 @@ class User < ActiveRecord::Base
   end
 
   def self.find_for_oauth_uid(auth)
-    User.where(provider: auth.provider, uid: auth.uid).first
+    User.where(provider: auth['provider'], uid: auth['uid']).first
   end
 
   def self.find_for_oauth_mail(auth)
-    user = User.where(email: auth.info.email).first
+    user = User.where(email: auth['info']['email']).first
     if user
       user.update_attributes(provider: auth.provider, uid: auth.uid)
       user.save
