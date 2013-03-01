@@ -132,6 +132,10 @@ class User < ActiveRecord::Base
         user.locale = (auth["extra"]["raw_info"]["locale"] rescue nil) || I18n.locale.to_s
         user.password = Devise.friendly_token[0,20]
 
+        if auth['provider'] == "yahoo"
+          user.image_url = (auth["info"]["image"] rescue nil)
+        end
+        
         if auth["provider"] == "google_oauth2"
           user.image_url = (auth["extra"]["raw_info"]["picture"] rescue nil)
         end

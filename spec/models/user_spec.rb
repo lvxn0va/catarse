@@ -158,7 +158,8 @@ describe User do
     let(:oauth_provider){ OauthProvider.create! name: 'twitter', key: 'dummy_key', secret: 'dummy_secret' }
     before{ oauth_provider }
     subject{ created_user }
-    # Provider and uid should be nil because we have transfered them to authorization model
+    # Provider and uid should be nil in the future because we have transfered them to authorization model
+    # Provider and UID added because of account avatar retrieval at User create
     its(:provider){ should == auth['provider'] }
     its(:uid){ should == auth['uid'] }
     its(:email){ should == auth['info']['email'] }

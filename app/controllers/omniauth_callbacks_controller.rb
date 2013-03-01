@@ -33,4 +33,18 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to new_user_registration_url
     end
   end
+
+  def yahoo
+    omniauth = request.env['omniauth.auth']
+    @user = User.create_with_omniauth(request.env["omniauth.auth"])
+    if @user && @user.persisted?
+      flash[:notice] = I18n.t("devise.omniauth_callbacks.success", :kind => "Yahoo", :user => "#{@user.email}")
+      sign_in @user, :event => :authentication #this will throw if @user is not activated
+      redirect_to(session[:return_to] || root_path)
+      session[:return_to] = nil 
+    else
+      session[:omniauth] = omniauth.except('extra')
+      redirect_to new_user_registration_url
+    end
+  end
 end
